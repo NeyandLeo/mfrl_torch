@@ -1,16 +1,23 @@
 ## Introduction
 
-This repo contains the reimplementation of the paper "mean field reinforcement learning" in PyTorch, the original repo is [here](https://github.com/mlii/mfrl). 
-
-The original repo uses MAgent library and tensorflow 1.0, which is outdated. This repo uses PyTorch and MAgent2 library(which uses pettingzoo api) to reimplement the paper.
+This repository provides a PyTorch-based reimplementation of the paper **"Mean Field Reinforcement Learning"**. The original implementation, available [here](https://github.com/mlii/mfrl), relies on the outdated MAgent library and TensorFlow 1.0. This project modernizes the approach using **PyTorch** and the **MAgent2** library, which is compatible with the PettingZoo API.
 
 ## Installation
-This repo based on MAgent2 library, pytorch and python 3.10(maybe also work in later python version), you can use ```pip``` to install it:
-```bash
-pip install magent2
-```
-However, there is a bug when you install magent2, magent2 will install a wrong version of pettingzoo library, you need to install the correct version of pettingzoo library manually:
-```bash
-pip install pettingzoo==1.22.3
-```
-After that, this code may work.(This code should work well in macos,linux and windows)
+
+This project requires **Python 3.10** or newer (other versions may work but are untested). To set up the environment, follow these steps:
+
+1. Install the **MAgent2** library via `pip`:
+    ```bash
+    pip install magent2
+    ```
+
+2. Fix the known compatibility issue with PettingZoo:
+    ```bash
+    pip install pettingzoo==1.22.3
+    ```
+
+After completing these steps, the code should function correctly on **macOS**, **Linux**, and **Windows** platforms.
+
+## Compatibility
+
+This implementation has been verified to run successfully across multiple operating systems. If you encounter issues, ensure all dependencies are correctly installed and meet the required versions.

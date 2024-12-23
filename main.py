@@ -8,7 +8,7 @@ config = {
     "oppo":"IL",
 }
 
-parallel_env = battle_v4.parallel_env(render_mode='human')
+parallel_env = battle_v4.parallel_env(render_mode='human',max_cycles=3000,map_size=45)
 buffer = Buffer()
 selfmodel = choose_model(config["self"])
 oppo_model = choose_model(config["oppo"])
