@@ -51,16 +51,15 @@ for i in range(0, config["episodes"]):
         #=================训练=================
         if len(buffer.blue_buffer) > 32:
             batch = buffer.sample(32,team="blue")
-            loss=selfmodel.train(batch)
-            print(f"blueteam---steps: {steps}, loss: {loss}")
+            blue_team_loss=selfmodel.train(batch)
         if len(buffer.red_buffer) > 32:
             batch = buffer.sample(32,team="red")
-            loss=oppo_model.train(batch)
-            print(f"redteam---steps: {steps}, loss: {loss}")
+            red_team_loss=oppo_model.train(batch)
             #=================更新target=================
         if steps % 10 == 0:
             selfmodel.update_target()
             oppo_model.update_target()
-
+        if steps% 100 == 0:
+            print(f"Step:{steps},Blue Team Loss:{blue_team_loss},Red Team Loss:{red_team_loss}")
 
 parallel_env.close()
