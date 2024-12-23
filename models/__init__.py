@@ -1,6 +1,6 @@
-from . import mf
+from . import mfq
 from . import IL
-MFQ = mf.MFModel
+MFQ = mfq.MFModel
 IL = IL.ILModel
 def choose_model(model_name):
     if model_name == "MFQ":

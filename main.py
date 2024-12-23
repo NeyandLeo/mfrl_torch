@@ -1,7 +1,5 @@
 from magent2.environments import battle_v4
-from pettingzoo.utils import random_demo
 from buffer import LastActionbuffer, Buffer
-from models.mf import MFModel
 from utils import get_team_members
 from models import choose_model
 config = {
