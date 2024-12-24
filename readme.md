@@ -26,3 +26,13 @@ The project currently supports the following environments:
 2. **Combined Arms**: Green and black agents represent "self_melee" and "self_ranged," respectively, while red and blue agents represent "oppo_melee" and "oppo_ranged."
 
 For detailed information about these environments, please refer to the [MAgent2 documentation](https://magent2.farama.org).
+
+## Usage
+The training script are "train_battle.py" and "train_combined_arms.py". You can run them with the following command:
+```bash
+python train_battle.py
+```
+```bash
+python train_combined_arms.py
+```
+Note that my code will train the "self_model" and "oppo_model" in the same time. If you want to train them separately, you can modify the code in "train_battle.py" and "train_combined_arms.py".
