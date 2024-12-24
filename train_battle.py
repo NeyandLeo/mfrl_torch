@@ -1,17 +1,17 @@
 from magent2.environments import battle_v4
-from buffer import LastActionbuffer, Buffer
-from utils import get_team_members
+from buffer_battle import LastActionbuffer, Buffer
+from utils import get_team_members_battle
 from models import choose_model
 config = {
     "episodes": 2000,
     "self":"MFQ",
     "oppo":"IL",
 }
-
-parallel_env = battle_v4.parallel_env(render_mode='human',max_cycles=3000,map_size=45)
+# 蓝色代表我方（屏幕右侧），红色代表敌方
+parallel_env = battle_v4.parallel_env(render_mode='human',max_cycles=3000,map_size=45,extra_features=False)
 buffer = Buffer()
-selfmodel = choose_model(config["self"])
-oppo_model = choose_model(config["oppo"])
+self_model = choose_model(config["self"],input_channels=5,num_actions=21)
+oppo_model = choose_model(config["oppo"],input_channels=5,num_actions=21)
 steps = 0
 
 for i in range(0, config["episodes"]):
@@ -21,16 +21,16 @@ for i in range(0, config["episodes"]):
         steps += 1
         old_observations = observations
         agent_list = parallel_env.agents
-        blue_team,red_team = get_team_members(agent_list) #将两个team打包成两个list分开，方便后续处理
+        blue_team,red_team = get_team_members_battle(agent_list) #将两个team打包成两个list分开，方便后续处理
         mean_blue_action, mean_red_action = action_buffer.get_mean_action()#获取上一轮的平均动作
         #=================获取动作=================
         actions = {}
         for member in blue_team:
             idx = member.split("_")[1]
             if config["self"] == "MFQ":
-                actions[member] = selfmodel.get_action(old_observations[member], idx, mean_blue_action)
+                actions[member] = self_model.get_action(old_observations[member], idx, mean_blue_action)
             else:
-                actions[member] = selfmodel.get_action(old_observations[member], idx)
+                actions[member] = self_model.get_action(old_observations[member], idx)
         for member in red_team:
             idx = member.split("_")[1]
             if config["oppo"] == "MFQ":
@@ -51,13 +51,13 @@ for i in range(0, config["episodes"]):
         #=================训练=================
         if len(buffer.blue_buffer) > 32:
             batch = buffer.sample(32,team="blue")
-            blue_team_loss=selfmodel.train(batch)
+            blue_team_loss=self_model.train(batch)
         if len(buffer.red_buffer) > 32:
             batch = buffer.sample(32,team="red")
             red_team_loss=oppo_model.train(batch)
             #=================更新target=================
         if steps % 10 == 0:
-            selfmodel.update_target()
+            self_model.update_target()
             oppo_model.update_target()
         if steps% 100 == 0:
             print(f"Step:{steps},Blue Team Loss:{blue_team_loss},Red Team Loss:{red_team_loss}")

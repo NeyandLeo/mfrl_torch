@@ -15,7 +15,7 @@ def get_teams(dict):
             red_team[number] = dict[key]
     return blue_team, red_team
 
-def get_team_members(agents):
+def get_team_members_battle(agents):
     blue_team = []
     red_team = []
     for agent in agents:
@@ -27,10 +27,27 @@ def get_team_members(agents):
             red_team.append(agent)
     return blue_team, red_team
 
-def transform_to_onehot(action):
+def get_team_members_combined_arm(agents):
+    blue_melee = []
+    blue_ranged = []
+    red_melee = []
+    red_ranged = []
+    for agent in agents:
+        name, number = agent.split("_")
+        if name == "bluemele":
+            blue_melee.append(agent)
+        elif name == "blueranged":
+            blue_ranged.append(agent)
+        elif name == "redmelee":
+            red_melee.append(agent)
+        else:
+            red_ranged.append(agent)
+    return blue_melee, blue_ranged, red_melee, red_ranged
+
+def transform_to_onehot(action,num_actions):
     """
     This function takes an action and returns a one-hot encoded action.
     """
-    one_hot = [0]*21
+    one_hot = [0]*num_actions
     one_hot[action] = 1
     return one_hot

@@ -6,8 +6,6 @@ class LastActionbuffer:
     def __init__(self,actions,num_agents):
         self.blue_buffer = {i:[0]*actions for i in range(num_agents)}
         self.red_buffer = {i:[0]*actions for i in range(num_agents)}
-    def get_last_action(self):
-        return self.blue_buffer, self.red_buffer
 
     def get_mean_action(self):
         mean_blue_action = [0]*21
@@ -27,9 +25,9 @@ class LastActionbuffer:
             team = key.split("_")[0]
             number = key.split("_")[1]
             if team == "blue":
-                self.blue_buffer[number] = transform_to_onehot(actions[key])
+                self.blue_buffer[number] = transform_to_onehot(actions[key],num_actions=21)
             else:
-                self.red_buffer[number] = transform_to_onehot(actions[key])
+                self.red_buffer[number] = transform_to_onehot(actions[key],num_actions=21)
 
 class Buffer:
     def __init__(self):

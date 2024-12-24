@@ -4,12 +4,12 @@ import torch.nn.functional as F
 import random
 
 class ILQNet(nn.Module):
-    def __init__(self,num_actions=21, hidden_size=256):
+    def __init__(self,input_channels=5,num_actions=21, hidden_size=256):
         super(ILQNet, self).__init__()
 
         # 1. obs 先经过两层卷积然后展平
         # 假设输入 obs 的形状为 (B, 5, 13, 13)
-        self.conv1 = nn.Conv2d(5, 16, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(input_channels, 16, kernel_size=3, stride=1, padding=1)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
 
         # 卷积后展平会得到 32 * 13 * 13 = 5408 的维度
@@ -58,10 +58,12 @@ class ILQNet(nn.Module):
         return q_values
 
 class ILModel(nn.Module):
-    def __init__(self,num_actions=21):
+    def __init__(self,input_channels=5,num_actions=21, hidden_size=256):
         super(ILModel, self).__init__()
-        self.qnet = ILQNet(num_actions, hidden_size=256)
-        self.target_qnet = ILQNet(num_actions, hidden_size=256)
+        self.num_actions = num_actions
+        self.input_channels = input_channels
+        self.qnet = ILQNet(self.input_channels,self.num_actions, hidden_size=hidden_size)
+        self.target_qnet = ILQNet(self.input_channels,self.num_actions, hidden_size=hidden_size)
         self.target_qnet.load_state_dict(self.qnet.state_dict())
         self.loss_fn = nn.MSELoss()
         self.optimizer = torch.optim.Adam(self.qnet.parameters(), lr=1e-3)
@@ -129,14 +131,14 @@ class ILModel(nn.Module):
         self.target_qnet.load_state_dict(self.qnet.state_dict())
 
     def get_action(self, obs, idx):
-        # 输入 obs, idx, mean_action，输出 Q 值最大的动作
+        # 输入 obs, idx，输出 Q 值最大的动作
         obs = torch.tensor(obs, dtype=torch.float32, device=self.device).unsqueeze(0)
         idx = float(idx)
         idx = torch.tensor([idx], dtype=torch.float32, device=self.device).unsqueeze(0)
         if random.random() < self.epsilon:
-            return random.randint(0, 20)
+            return random.randint(0, self.num_actions - 1)
         else:
             q_values = self.qnet(obs, idx)
             qmax = q_values.max().item()
-            possible_actions = [i for i in range(21) if q_values[0][i].item() == qmax]
+            possible_actions = [i for i in range(self.num_actions) if q_values[0][i].item() == qmax]
             return random.choice(possible_actions)

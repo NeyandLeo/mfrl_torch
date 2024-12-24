@@ -1,23 +1,28 @@
 ## Introduction
 
-This repository provides a PyTorch-based reimplementation of the paper **"Mean Field Reinforcement Learning"**. The original implementation, available [here](https://github.com/mlii/mfrl), relies on the outdated MAgent library and TensorFlow 1.0. This project modernizes the approach using **PyTorch** and the **MAgent2** library, which is compatible with the PettingZoo API.
+This repository offers a PyTorch-based reimplementation of the paper **"Mean Field Multi-Agent Reinforcement Learning"**. The original implementation, available [here](https://github.com/mlii/mfrl), relied on the outdated MAgent library and TensorFlow 1.0. This project modernizes the approach by utilizing **PyTorch** and the **MAgent2** library, which is fully compatible with the PettingZoo API.
 
 ## Installation
 
-This project requires **Python 3.10** or newer (other versions may work but are untested). To set up the environment, follow these steps:
+This project requires **Python 3.10** or newer (other versions may work but are untested). Follow these steps to set up the environment:
 
-1. Install the **MAgent2** library via `pip`:
+1. Install the **MAgent2** library using `pip`:
     ```bash
     pip install magent2
     ```
 
-2. Fix the known compatibility issue with PettingZoo:
+2. Resolve a known compatibility issue with PettingZoo (you may see a version conflict warning during installation; it can be safely ignored):
     ```bash
     pip install pettingzoo==1.22.3
     ```
 
-After completing these steps, the code should function correctly on **macOS**, **Linux**, and **Windows** platforms.
+After completing these steps, the code should work seamlessly on **macOS**, **Linux**, and **Windows** platforms.
 
-## Compatibility
+## Environment Support
 
-This implementation has been verified to run successfully across multiple operating systems. If you encounter issues, ensure all dependencies are correctly installed and meet the required versions.
+The project currently supports the following environments:
+
+1. **Battle**: Blue agents represent the "self_model," while red agents represent the "oppo_model."
+2. **Combined Arms**: Green and black agents represent "self_melee" and "self_ranged," respectively, while red and blue agents represent "oppo_melee" and "oppo_ranged."
+
+For detailed information about these environments, please refer to the [MAgent2 documentation](https://magent2.farama.org).
