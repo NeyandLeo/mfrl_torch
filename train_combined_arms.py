@@ -88,5 +88,9 @@ for i in range(0, config["episodes"]):
             oppo_ranged_model.update_target()
         if steps% 100 == 0:
             print("Episode: {}, Step: {}, Blue Melee Loss: {}, Blue Ranged Loss: {}, Red Melee Loss: {}, Red Ranged Loss: {}".format(i,steps,blue_melee_loss,blue_ranged_loss,red_melee_loss,red_ranged_loss))
+self_melee_model.save_model("self_melee-mfq-combined-arms")
+self_ranged_model.save_model("self_ranged-mfq-combined-arms")
+oppo_melee_model.save_model("oppo_melee-IL-combined-arms")
+oppo_ranged_model.save_model("oppo_ranged-IL-combined-arms")
 
 parallel_env.close()

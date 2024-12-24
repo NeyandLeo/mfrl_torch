@@ -61,5 +61,7 @@ for i in range(0, config["episodes"]):
             oppo_model.update_target()
         if steps% 100 == 0:
             print(f"Step:{steps},Blue Team Loss:{blue_team_loss},Red Team Loss:{red_team_loss}")
+self_model.save_model("self-mfq-battle")
+oppo_model.save_model("oppo-il-battle")
 
 parallel_env.close()

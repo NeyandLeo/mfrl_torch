@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import random
+import os
 
 class ILQNet(nn.Module):
     def __init__(self,input_channels=5,num_actions=21, hidden_size=256):
@@ -142,3 +143,8 @@ class ILModel(nn.Module):
             qmax = q_values.max().item()
             possible_actions = [i for i in range(self.num_actions) if q_values[0][i].item() == qmax]
             return random.choice(possible_actions)
+
+    def save_model(self, model_name="IL"):
+        if not os.path.exists("./saved_models"):
+            os.makedirs("./saved_models")
+        torch.save(self.qnet.state_dict(), os.path.join("./saved_models", f"{model_name}.pth"))
